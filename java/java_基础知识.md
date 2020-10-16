@@ -68,11 +68,17 @@ int score[] = new int[3];
 //定义时直接指定元素
 int score[] = new int[]{4,5,52,8};
 int score[] = {4,5,52,8};
+<<<<<<< HEAD
 int score[4] = {4,5,52,8};//错误，4与{}不能同时出现
 int score[];//错误
 ```
 
 数组元素可以是各种数据类型，数组元素可以是值类型（如int）或引用类型（如String），但是数组本身是引用类型，即score为操作数组元素的地址，存在栈内存中，而数组元素存储在堆内存中（有点对象的**句柄和属性** 那味了）。值得注意的是，**int型数组变化相对应内存会变化，而字符串只是指向变化，内存不变。**
+
+```
+
+数组元素可以是各种数据类型，数组元素可以是值类型（如int）或引用类型（如String），但是数组本身是引用类型，即score为操作数组元素的地址，存在栈内存中，而数组元素存储在堆内存中（有点对象的句柄和属性那味了）。值得注意的是，**int型数组变化相对应内存会变化，而字符串只是指向变化，内存不变。**
+>>>>>>> 7f1e91df6c5133b1ebafbf6d795a2e939ef13d6d
 
 <img src="C:\Users\win10\AppData\Roaming\Typora\typora-user-images\image-20201004174922471.png" alt="image-20201004174922471" style="zoom: 67%;" />
 
@@ -80,15 +86,18 @@ int score[];//错误
 
 其内存并没有改变，而是names[1]指向的内存块发生了变化。而"XYZ"因为再也无法被访问而“死亡”。
 
+<<<<<<< HEAD
 **以及在数组为空时，调用score[0]和使用score.length都是错误的** 
 
+=======
+>>>>>>> 7f1e91df6c5133b1ebafbf6d795a2e939ef13d6d
 #### 2.数组遍历
 
 使用for循环，通过索引遍历，与C语言相同。
 
 方法一：
 
-```java
+​```java
 public class main{
     public static void main(String args){
         int ns[] = {4,5,8,6,6};
@@ -239,7 +248,6 @@ int[][][] ns = {
 内存结构：
 
 ![image-20201004184137836](C:\Users\win10\AppData\Roaming\Typora\typora-user-images\image-20201004184137836.png)
-
 访问元素及length与二维数组无差。
 
 ## 三、String类与字符串
@@ -293,3 +301,7 @@ str1.equals(str4):true
 #### 3.字符串内容不可变
 
 在源代码中，字符串使用final关键字定义，它是常量，不可被继承，不可被修改，且底部实质为数组。于是对于每次改字符串的操作，它都要生成新的数组，不过表面还是字符串修改。
+
+#### 4.一些基本方法
+
+length（）：字符串中的长度为方法，需要使用str.length()；而数组中的长度为属性，使用array.length。

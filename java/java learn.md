@@ -1,11 +1,10 @@
 [TOC]
 
-
+<font face="SentyZHAO 新蒂赵孟頫" size=10 color="red">学习一种与JVM沟通的方式!</font> 
 
 ## 一、JAVA简介
 
 Java是基于JVM虚拟机（高低版本完美兼容）的跨平台语言，可移植性极佳；介于编译型语言和解释型语言之间，将代码编译成一种“字节码”，它类似于抽象的CPU指令
-
 我是一个编剧，创造了这个java世界，而虚拟机类似于导演
 
 ## 二、JAVA快速入门
@@ -99,13 +98,18 @@ public class Bee00{
 		Bee00 bee2 = new Bee00(2,100,100);
 	}
 }
-```
-
 其对象通过操作句柄操作，具体**内存映像** 为下图
+```
 
 ![image-20201004081958302](C:\Users\win10\AppData\Roaming\Typora\typora-user-images\image-20201004081958302.png)
 
 我们可调用的只有句柄，对象是无法直接调用的，句柄对应于对象的声明名字。句柄存储在栈中，而对象的属性存储在堆中，而方法在堆栈之外的其他内存（代码区）【栈内存小，调用速度快；堆内存大，调用速度慢】
+
+其对象通过操作句柄操作，具体内存映像为下图
+
+![image-20201004081958302](C:\Users\win10\AppData\Roaming\Typora\typora-user-images\image-20201004081958302.png)
+
+我们可调用的只有句柄，对象是无法直接调用的，句柄对应于对象的声明名字。句柄存储在栈中，而对象的属性存储在堆中，而方法在堆栈之外的其他内存（栈内存小，调用速度快；堆内存大，调用速度慢）
 
 **调用方法：（属性）bee1.id    bee2.X     （方法）bee1.showhoney()**
 
@@ -237,7 +241,7 @@ public class Job2{
 
 抽象方法只需声明(使用abstract关键字），而不需要实现。（一个子类只能继承一个抽象方法）抽象类必须被子类继承，且子类必须复写抽象类中的全部抽象方法。**注：抽象方法不能使用private声明，否则子类无法覆盖**
 
-**可以包含非抽象方法！！！**       （适用于很多方法需要实现，父类会统统帮你实现）            
+**可以包含非抽象方法！！！**       （适用于很多方法需要实现，父类会统统帮你实现）                                    
 
 ```java
 abstract class 抽象类名称{
@@ -282,6 +286,8 @@ public class Ext4{
 #### 5.接口
 
 接口是一种特殊的类，里面全部是由全局常量和公共的抽象方法所组成。**不允许有非抽象方法出现！！！** 接口中的访问权限无论写还是不写，都是public。接口就像干爹，可以认很多个，而父类只能认一个。  （适用于方法比较少，构造方法之间差别比较大的）
+
+
 
 ```java
 interface 接口名称{
@@ -461,10 +467,10 @@ variable initialized
 
 ## 专题二：关于子类父类的那些破事
 
-1.在不存在子类方法覆盖时，子类对象调用的从父类继承的方法不能操控子类的属性；除非子属性也是继承来的，直接上溯到操作父类
+1.①**在不存在子类方法覆盖时** ，子类对象调用的从父类继承的方法不能操控子类的属性；除非子属性也是继承来的，直接上溯到操作父类
 
 ```java
-class Bee{
+1.class Bee{
      int honeyBag = 0;
      public void pickHoney(){
           honeyBag ++;
@@ -476,7 +482,7 @@ public class Test extends Bee{
 
     public static void main(String[] args) {
          Test b = new Test();//子类对象赋给子类句柄
-         b.pickHoney();//父类对象操作子类属性失败
+         b.pickHoney();//父类的方法操作子类属性失败
          System.out.println(b.honeyBag);//打印子类属性
     }
 }
@@ -484,8 +490,51 @@ public class Test extends Bee{
          
 ```
 
+**不存在方法覆盖时**，子类对象赋值给父类句柄后，操作对象相当于操作父类对象的属性与方法。
+
 ```java
-class Bee{
+2.class Bee{
+     int honeyBag = 2;
+     public void pickHoney(){
+          honeyBag ++;
+     }
+}
+public class Test extends Bee{
+    int honeyBag = 4;
+}
+
+public class Test extends Bee{
+    public static void main(String[] args) {
+         Bee b = new Test();
+         b.pickHoney();//操作父类的属性
+         System.out.println(b.honeyBag);//打印改变后的父类的属性
+    }
+}
+>>>3
+    
+3.class Bee{
+     int honeyBag = 2;
+     public void pickHoney(){
+          honeyBag ++;
+     }
+}
+
+public class Test extends Bee{
+    public static void main(String[] args) {
+         Bee b = new Test();
+         b.pickHoney();//还是操作父类属性
+         System.out.println(b.honeyBag);//打印改变后的父类的属性
+    }
+}
+>>>3
+```
+
+
+
+2.在**存在方法覆盖时，对象决定调用哪个方法，句柄判断访问哪个属性** 
+
+```java
+4.class Bee{
      int honeyBag = 2;
      public void pickHoney(){
           honeyBag ++;
@@ -505,32 +554,8 @@ public class Test extends Bee{
     }
 }
 >>>9
-```
 
-不存在方法覆盖时，子类对象赋值给父类句柄后，？？？？？
-
-```java
-class Bee{
-     int honeyBag = 2;
-     public void pickHoney(){
-          honeyBag ++;
-     }
-}
-
-public class Test extends Bee{
-    public static void main(String[] args) {
-         Bee b = new Test();
-         b.pickHoney();
-         System.out.println(b.honeyBag);
-    }
-}
->>>3
-```
-
-2.在**存在方法覆盖时，对象决定调用哪个方法，句柄判断访问哪个属性** 
-
-```java
-class Bee{
+5.class Bee{
      int honeyBag = 2;
      public void pickHoney(){
           honeyBag ++;
@@ -550,7 +575,30 @@ public class Test extends Bee{
     }
 }
 >>>2  打印的是没有操作过得父类属性
+    
+6.class Bee{
+     int honeyBag = 2;
+     public void pickHoney(){
+          honeyBag ++;
+     }
+}
+
+public class Test extends Bee{
+    public void pickHoney(){
+     honeyBag += 5;
+}
+
+    public static void main(String[] args) {
+         Bee b = new Test();//将子类对象赋给父类句柄
+         b.pickHoney();//对象判断方法，调用子类方法，由于没有自己的属性，上溯操作父类的属性
+         System.out.println(b.honeyBag);//句柄判断属性，打印父类属性
+    }
+}
+>>>7  打印的是操作过的父类属性 
+  
 ```
+
+<u>**父类的方法不能改变子类的属性，子类的方法在没有自己的属性时可以改变父类属性**</u> 
 
 子类对象可以赋给父类句柄，因为父类句柄可调用方法属性，子类全部都继承到了，一定存在。但是父类不存在的方法父类句柄是无法调用的
 
@@ -618,20 +666,67 @@ public class test0 {
 
 其实是java的倔强，它要求什么都在包里面，要做到面向对象，但是其实main方法与所在类（这个类名要求与文件名一致）屁关系都没有，因此main不能调用该类的属性，只能调用main自己的属性，毕竟main（）与日同辉，类属性（就算是静态也不要调用，显得自己没有水平）还没出生
 
+#### 3.包（package)
 
+用于解决类名冲突，如果类属于的包不同，那么程序调用的类名就不同。所以在类名使用时需要在一行声明在哪个包(为了不产生歧义，最好包名类名都写完整)  推荐使用下面方法进行引用
 
-#### 3.控制设计
+【包没有父子关系，不存在继承问题】
+
+```java
+// Person.java
+package ming;
+
+// 导入完整类名:
+import mr.jun.Arrays;
+
+public class Person {
+    public void run() {
+        Arrays arrays = new Arrays();
+    }
+}
+```
+
+例如：beefarm包内含有BeeFarming 和 Bee00两个类，使用javac编译时需要进入beefarm文件中，但是**编译好后需退出来运行** ，因为编译好后该包被封装起来了。对于特定的类，使用java beefarm.BeeFarming运行
+
+![image-20201016222647237](C:\Users\win10\AppData\Roaming\Typora\typora-user-images\image-20201016222647237.png) 
+
+#### 4.控制设计
+
+对属性和方法的访问控制修饰符：
+
+| 访问控制修饰符     | 同一个类 | 同一个包 | 不同包里的子类 | 不同包里的非子类 |
+| ------------------ | -------- | -------- | -------------- | ---------------- |
+| public             | 可访问   | 可访问   | 可访问         | 可访问           |
+| protected          | 可访问   | 可访问   | 可访问         | 不可访问         |
+| friendly（默认值） | 可访问   | 可访问   | 不可访问       | 不可访问         |
+| private            | 可访问   | 不可访问 | 不可访问       | 不可访问         |
 
   缺省表示包内友好（包内均可访问），但是包外不能访问
 
 protected:包内可以看到，包外继承后的子类可以看到自己属性
 
-属性尽量使用private，方法使用public（可以公开使用）
+**属性尽量使用private，方法使用public（可以公开使用）** 
 
-#### 4.Javadoc
+#### 5.作用域
+
+与控制访问还蛮像，包括全局变量，局部变量，和C语言、python都很像，这里就不一一叙述啦
+
+#### 6.Javadoc
 
 (记得复习python字符文档部分)
 
-进入文件夹，然后使用 javadoc  *.java
+进入文件夹，然后使用 javadoc  *.java 可以生成全部类的javadoc API文件
 
-#### 5.作用域
+#### 7.命名规范
+
+• 类的命名：一般是名词，每个单词首字母 大写，如：Bee, BeeFarming； 
+
+• 属性命名：一般是名词，第一 个字母小写，后每个单词首字母大写，如： studentName； 
+
+• 方法命名：一般是动词或动宾结构，第一 个字母小写，后每个单词首字母大写，如： flying(), pickHoney()； 
+
+• 变量命名：同方法命名，最好是类型缩写+ 含义名词，如：intVolumn, fltPecent；
+
+• 包命名：所有单词字母小写；
+
+• 常量命名：所有单词字母大写；

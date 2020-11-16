@@ -1,12 +1,19 @@
-import java.util.Scanner;
+import java.io.File;
+
 public class test {
-    public static void main(String[] args) {
-        System.out.println("喻越");//输出
-        Scanner in = new Scanner(System.in);//输入
-        System.out.println(in.nextLine());
-<<<<<<< HEAD
-        in.close();
-=======
->>>>>>> 7f1e91df6c5133b1ebafbf6d795a2e939ef13d6d
-    }
+	public static void main(String[] args) {
+		// String path = "F:" + File.separator + "lan" + File.separator + "git" +
+		// File.separator + "java" + File.separator
+		// + "1_java_基础知识.md";
+		File f = new File("F:" + File.separator + "lan" + File.separator + "git" + File.separator + "java"
+				+ File.separator + "1_java_基础知识.md");
+		try {
+			System.out.println(f.getCanonicalPath());
+			System.out.println(f.canWrite());
+		} catch (Exception e ) {
+			e.printStackTrace();
+		}
+
+	}
+
 }

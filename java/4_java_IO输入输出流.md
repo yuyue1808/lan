@@ -289,7 +289,51 @@ File和Buffer都是字节流，即一次读写一个 字节（虽然buffer更高
 
 <font color=red size=5 face="SentyZHAO 新蒂赵孟頫">**Reader /Writer**"</font>
 
-Reader/Writer本质上是能自动编解码的InputStream和OutputStream。适用于文本的输入输出。
+Reader/Writer本质上是能自动编解码（指定编解码方式）的InputStream和OutputStream。适用于文本的输入输出。
+
+程序中一个字符等于两个字节。这两个类也是抽象类，使用子类实现。其中也暗含异常处理（**异常类：IOException**）
+
+它与字节输入输出流极其类似，故不重复叙述。
+
+![image-20201116194448146](C:\Users\win10\AppData\Roaming\Typora\typora-user-images\image-20201116194448146.png) 
+
+主要子类如上，其中也包括文件读写与缓存区读写
+
+**常用方法：**
+
+<img src="C:\Users\win10\AppData\Roaming\Typora\typora-user-images\image-20201116194239556.png" alt="image-20201116194239556" style="zoom:67%;" /> 
+
+<img src="C:\Users\win10\AppData\Roaming\Typora\typora-user-images\image-20201116194317255.png" alt="image-20201116194317255" style="zoom:67%;" /> 
+
+
+
+## 四、字节字符IO流的区别与联系
+
+### （一）区别
+
+字节流在操作的时候本身不会用到缓存区（内存），而是通过直接操作文件的；而字符流操作的时候使用缓存区在通过缓存区操作文件。例如，如果使用字节流写文件，在字节流不关闭时，文件是可以直接显示内容的；而使用字符流时，由于字符流文件未关闭1，没有执行将缓存读到文件中的操作，文件中就看不到写的内容。但是我们可以通过**writer.flush（）**进行强制的缓存刷新，内存内容被强制读取到文件
+
+### （二）联系：InputStreamReader
+
+它是Reader的儿子。它是从InputStreeam到Reader的转换器
+
+<img src="C:\Users\win10\AppData\Roaming\Typora\typora-user-images\image-20201116195822784.png" alt="image-20201116195822784" style="zoom:67%;" /> 
+
+常用方法：
+
+<img src="C:\Users\win10\AppData\Roaming\Typora\typora-user-images\image-20201116195935046.png" alt="image-20201116195935046" style="zoom:67%;" /> 
+
+现实使用时使用InputStream类更好，因为所有数据存储在硬盘中都是以字节存储的，字符流底层还是字节流，所以字节流使用更加广泛。
+
+**编码：**
+
+| 编码方式  |                                                              |
+| --------- | ------------------------------------------------------------ |
+| GB2312    | 汉字是双字节的。所谓双字节是指一个双字要占用两个BYTE的位 置（即16位），分别称为高位和低位。GB2312包括了一二级汉 字编码范围为0xb0a1到0xf7fe |
+| GBK       | GBK提供了20902个汉字，它兼容GB2312，编码范围为0x8140 到0xfefe |
+| ISO8859_1 | 英文字符                                                     |
+
+一般默认为GBK或者GB2312
 
 ## 重点！InputStream 的继承关系
 

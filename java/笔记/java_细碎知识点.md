@@ -162,3 +162,93 @@ public class ALTest1{
 ![image-20201029161448278](C:\Users\win10\AppData\Roaming\Typora\typora-user-images\image-20201029161448278.png) ![image-20201029162052763](C:\Users\win10\AppData\Roaming\Typora\typora-user-images\image-20201029162052763.png) 
 
 第一轮移除了java后，al动态数组变成了只包含“c++  pascal perl"的数组，随后remove（1)即移除第二个”pascal"，数组长度变成2，i=2不满足条件退出循环。
+
+
+
+**实验考试题 **
+
+```java
+import java.util.*;
+
+//请完成★★★中规定的内容
+public class Test{
+	private ArrayList<People> peoples = new ArrayList<People>();
+	
+	public Test(){		
+		People p = new People("关羽",80,90,90);
+		peoples.add(p);
+		p = new People("张飞",70,90,80);
+		peoples.add(p);
+		p = new People("赵云",85,95,90);
+		peoples.add(p);
+		p = new People("黄忠",85,80,70);
+		peoples.add(p);
+		p = new People("刘备",85,80,75);
+		peoples.add(p);		
+	}
+	
+	//按智慧+攻击+防御总和进行排序，将序号写入people对象中，排名第一是1，顺序增加
+	//排序实现形式任意，具体查阅JDK API帮助
+	public void ranking(){
+		//★★★实验者实现(计算每个武将的总指数)
+		Iterator<People> it = peoples.iterator();
+		int arrayRank [] = new int[5];
+		int i = 0;
+		while(it.hasNext()){
+			People p = it.next();
+			int a = Math.round(p.getZhihui() + p.getGongji() + p.getFangyu());   
+			p.setRank(a);
+			arrayRank[i] = a;
+			i++;
+		}
+		//★★★实验者实现方法（对武将总指数进行排序，并设置对应people对象的rank值）
+		 for(int m = 0 ; m < arrayRank.length-1; m++)
+		 {
+			 for(int n = 0; n < arrayRank.length-1-m; n++)
+			 {
+				 int temp;
+				 if(arrayRank[n] < arrayRank[n+1])
+				 {
+					temp = arrayRank[n];
+					arrayRank[n] = arrayRank[n+1];
+					arrayRank[n+1] = temp;
+				 }
+			 }
+		 } 
+		Iterator<People> itt = peoples.iterator();
+		while(itt.hasNext()){
+			People p = itt.next(); 
+			int x = 0; 
+			for(int j = 0 ; j <arrayRank.length; j++)
+		    {
+				if(arrayRank[j] == p.getRank())
+				{
+					x = j;
+                    break;
+				}	
+			} 
+			p.setRank(x+1);
+		}
+		// System.out.println(Arrays.toString(arrayRank));
+
+	}
+	
+	//输出武将清单
+	public void listRank(){
+		Iterator<People> it = peoples.iterator();
+		while(it.hasNext()){
+			People p = it.next();  
+			System.out.println("三国排名【"+p.getRank()+"】："+p.getName()+" 智慧("+p.getZhihui()+"),攻击("+p.getGongji()+"),防御("+p.getFangyu()+")");
+		}
+		
+	}
+	
+	public static void main(String[] args){
+		Test t = new Test();
+		System.out.println("排序显示-----------------------------");
+		t.ranking();
+		t.listRank();
+	}
+}
+```
+

@@ -1,19 +1,22 @@
-import java.io.File;
+import java.io.*;
 
 public class test {
 	public static void main(String[] args) {
-		// String path = "F:" + File.separator + "lan" + File.separator + "git" +
-		// File.separator + "java" + File.separator
-		// + "1_java_基础知识.md";
-		File f = new File("F:" + File.separator + "lan" + File.separator + "git" + File.separator + "java"
-				+ File.separator + "1_java_基础知识.md");
-		try {
-			System.out.println(f.getCanonicalPath());
-			System.out.println(f.canWrite());
-		} catch (Exception e ) {
-			e.printStackTrace();
-		}
+		// try {
+		// File infile = new File(".\\data.txt");
+		// BufferedReader fis = new BufferedReader(new FileReader(infile));
+		// String line = fis.readLine();
+		// while (line.length() != 0) {
+		// System.out.println(line);
+		// line = fis.readLine();
+		// }
+		// fis.close();
+
+		// } catch (Exception e) {
+		// e.printStackTrace();
+		// }
+		float i = 100f / 3;
+		System.out.println(i);
 
 	}
-
 }

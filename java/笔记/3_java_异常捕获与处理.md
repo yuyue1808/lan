@@ -14,7 +14,7 @@
 
 ④最后执行finally语句（异常统一出口）
 
-⑤然后执行try ....catch后面的正常程序部分
+⑤然后执行try ....catch后面的正常程序部分（而异常处理不能影响正常的执行路径 ）
 
 #### 2.程序异常处理语句
 
@@ -71,13 +71,13 @@ Exception表示最大范围的捕捉，可以放在最后面囊括所有，但�
 
 java异常结构中常用Exception与Error类，它们都是Throwable的子类。区别是
 
-①Exception一般表示的是程序中出现的问题（比如算术异常、数学格式化异常等），可以直接使用try...catch处理；
+①Exception一般表示的是程序中出现的问题（比如算术异常、数学格式化异常等），可以直接使用try...catch处理；(程序中的问题,可预知的): Java编译器要求Java 程序必须捕获或声明所有的**非运行时** 异常 
 
 ②Runtime Exception一般指系统检测，例如被0除等系统错误，数组下标超范围等，用户的java程序可不做处理，系统将它们交给缺省的异常处理程序；
 
-③Error一般指JVM错误，程序无法处理。
+③Error由Java虚拟机生成并抛出,Java程序不做处理 。
 
-<img src="C:\Users\win10\AppData\Roaming\Typora\typora-user-images\image-20201023145847844.png" alt="image-20201023145847844" style="zoom:80%;" />  
+<img src="C:\Users\win10\AppData\Roaming\Typora\typora-user-images\image-20201023145847844.png" alt="image-20201023145847844" style="zoom: 67%;" />  
 
 在打印异常对象时，除了使用System.out.println()，还可以使用**e.printStackTrace()** ;后者输出信息更加详细
 
@@ -85,7 +85,7 @@ java异常结构中常用Exception与Error类，它们都是Throwable的子类�
 
 如果方法之间、类之间存在调用关系，在任何一个方法中发生异常，整个异常传递序列都会被保存在异常堆栈中，而通过**e.printStackTrace()** 可以将异常堆栈打印下来
 
-![image-20201023145346076](C:\Users\win10\AppData\Roaming\Typora\typora-user-images\image-20201023145346076.png) 
+<img src="C:\Users\win10\AppData\Roaming\Typora\typora-user-images\image-20201023145346076.png" alt="image-20201023145346076" style="zoom:67%;" /> 
 
 其中method1是最内层（发生错误的层），main是最外层
 
@@ -132,7 +132,7 @@ public class Exp4{
 }
 ```
 
-![image-20201023152724906](C:\Users\win10\AppData\Roaming\Typora\typora-user-images\image-20201023152724906.png) 
+<img src="C:\Users\win10\AppData\Roaming\Typora\typora-user-images\image-20201023152724906.png" alt="image-20201023152724906" style="zoom:67%;" /> 
 
 当抛出异常时！！！！
 

@@ -87,6 +87,52 @@ File f = File.createTempFile("tmp-", ".txt"); // 提供临时文件的前缀和�
 f.deleteOnExit(); // JVM退出时自动删除，但是程序运行过程中这个文件是存在的
 ```
 
+**c.**压缩文件
+
+ 压缩实现在java.util.zip.*; 
+
+• 核心的类GZIPOutputStream插在File和Buffered 之间 GZIPOutputStream
+
+```java
+import java.io.*;
+import java.util.zip.*;
+
+public class GZIPcompress {
+  public static void main(String[] args) {
+    try {
+      BufferedReader in =
+        new BufferedReader(
+          new FileReader(args[0]));
+      BufferedOutputStream out =
+        new BufferedOutputStream(
+          new GZIPOutputStream(
+            new FileOutputStream("test.gz")));
+      System.out.println("Writing file");
+      int c;
+      while((c = in.read()) != -1)
+        out.write(c);
+      in.close();
+      out.close();
+      System.out.println("Reading file");
+      BufferedReader in2 =
+        new BufferedReader(
+          new InputStreamReader(
+            new GZIPInputStream(
+              new FileInputStream("test.gz"))));
+      String s;
+      while((s = in2.readLine()) != null)
+        System.out.println(s);
+    } catch(Exception e) {
+      e.printStackTrace();
+    }
+  }
+}
+
+
+```
+
+
+
 #### 2.当File对象表示目录时
 
 目录可以理解成文件夹
@@ -283,6 +329,56 @@ File和Buffer都是字节流，即一次读写一个 字节（虽然buffer更高
 
 <img src="C:\Users\win10\AppData\Roaming\Typora\typora-user-images\image-20201111215120905.png" alt="image-20201111215120905" style="zoom:67%;" /> 
 
+```java
+import java.io.*;
+
+public class DataStream{  
+	public static void main(String args[])throws  IOException{ 
+		FileOutputStream fos=new FileOutputStream("file2.txt");
+		BufferedOutputStream bos = new BufferedOutputStream(fos);
+		DataOutputStream dos=new DataOutputStream (bos);
+		try{
+			dos.writeBoolean(true);
+			dos.writeByte((byte)123);
+			dos.writeChar('J');
+			dos.writeDouble(3.141592654);
+			dos.writeFloat(2.7182f);
+			dos.writeInt(1234567890);
+			dos.writeLong(998877665544332211L);
+			dos.writeShort((short)11223);
+		}catch(Exception e) {
+			System.err.println("FileStreamsTest: "+e);
+		}
+		finally{  
+			dos.close(); 
+		}	
+		System.in.read();
+		//BufferedInputStream dis = new BufferedInputStream(new DataInputStream(new FileInputStream("file2.txt")));
+		DataInputStream dis=new DataInputStream(new FileInputStream("file2.txt"));
+		try{
+			System.out.println("\t "+dis.readBoolean());
+			System.out.println("\t "+dis.readByte());
+			System.out.println("\t "+dis.readChar());
+			System.out.println("\t "+dis.readDouble());
+			System.out.println("\t "+dis.readFloat());
+			System.out.println("\t "+dis.readInt());
+			System.out.println("\t "+dis.readLong());
+			System.out.println("\t "+dis.readShort());
+		}finally{
+			dis.close();
+		}	
+	}
+}
+>>>  true
+         123
+         J
+         3.141592654
+         2.7182
+         1234567890
+         998877665544332211
+         11223
+```
+
 
 
 ## 三、字符输入输出流（char)
@@ -304,6 +400,53 @@ Reader/Writer本质上是能自动编解码（指定编解码方式）的InputSt
 <img src="C:\Users\win10\AppData\Roaming\Typora\typora-user-images\image-20201116194239556.png" alt="image-20201116194239556" style="zoom:67%;" /> 
 
 <img src="C:\Users\win10\AppData\Roaming\Typora\typora-user-images\image-20201116194317255.png" alt="image-20201116194317255" style="zoom:67%;" /> 
+
+```java
+import java.io.*;
+
+public class ReaderDiff {
+	public static void main(String args[]) {
+		try {
+			File inFile1 = new File("file1.txt");
+			File inFile2 = new File("file3.txt");
+
+			BufferedInputStream bis = new BufferedInputStream(new FileInputStream(inFile1));
+			// BufferedReader isr = new BufferedReader(new FileReader(inFile2));
+			InputStreamReader isr = new InputStreamReader(new FileInputStream(inFile2), "GBK");
+			// InputStreamReader isr = new InputStreamReader(new FileInputStream(inFile2),
+			// "GB2312");
+			int c1;
+			byte[] bs = new byte[50];
+			int c2;
+			int count1 = 0;
+			int count2 = 0;
+			while ((c1 = bis.read()) != -1) {
+				// System.out.print(new Byte((byte) c1));
+				bs[count1] = (byte) c1;
+				count1++;
+			}
+			System.out.println();
+			System.out.println(new String(bs));
+			System.out.println("------------------------------");
+			while ((c2 = isr.read()) != -1) {
+				System.out.print(new Character((char) c2));
+				count2++;
+			}
+			System.out.println();
+			System.out.println("------------------------------");
+			System.out.println("Stream byte number=" + count1);
+			System.out.println("Reader char number=" + count2);
+			bis.close();
+			isr.close();
+		} catch (FileNotFoundException e) {
+			System.out.println(e);
+		} catch (IOException e) {
+			System.err.println(e);
+		}
+	}
+}
+
+```
 
 
 
